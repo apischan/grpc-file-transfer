@@ -1,0 +1,55 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("com.google.protobuf:protobuf-gradle-plugin:0.8.5")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'com.google.protobuf'
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.5.1"
+    }
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.10.1'
+        }
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.plugins {
+                grpc {}
+            }
+            task.builtins {
+                python {}
+            }
+        }
+    }
+    generatedFilesBaseDir = "$projectDir/generated"
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile("io.grpc:grpc-all:1.10.1")
+}
+
+clean {
+    delete protobuf.generatedFilesBaseDir
+}
+
+idea {
+    module {
+        sourceDirs += file("${projectDir}/src/generated/main/java")
+        sourceDirs += file("${projectDir}/src/generated/main/grpc")
+        sourceDirs += file("${projectDir}/src/generated/main/python")
+        sourceDirs += file("${projectDir}/src/main/proto")
+    }
+}

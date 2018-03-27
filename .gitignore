@@ -2,7 +2,10 @@
 build
 out
 .gradle
-/src/generated/
+**/generated/
+
+# Python
+venv
 
 # IntelliJ IDEA
 .idea

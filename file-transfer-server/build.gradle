@@ -1,0 +1,26 @@
+// https://github.com/xvik/gradle-use-python-plugin
+
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "gradle.plugin.com.innobead:gradle-python-plugin:1.1.2"
+    }
+}
+
+apply plugin: "com.innobead.python"
+apply plugin: 'idea'
+
+idea {
+    module {
+        sourceDirs += file("${projectDir}/generated")
+        sourceDirs += file("${projectDir}/src")
+    }
+}
+
+python {
+    sourceDirs = files('src')
+}

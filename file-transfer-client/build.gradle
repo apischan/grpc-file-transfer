@@ -1,0 +1,38 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.0.RELEASE")
+    }
+}
+
+apply from: "$rootDir/gradle/common.gradle"
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile(project(":file-transfer-protocol"))
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("io.projectreactor:reactor-core")
+}
+
+idea {
+    module {
+        sourceDirs += file("${projectDir}/src/generated/main/java")
+        sourceDirs += file("${projectDir}/src/generated/main/grpc")
+        sourceDirs += file("${projectDir}/src/main/proto")
+    }
+}
+
+bootJar {
+    baseName = 'grpc-file-transfer'
+    version =  '0.1.0'
+}

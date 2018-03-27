@@ -1,1 +1,5 @@
 rootProject.name = 'grpc-file-transfer'
+
+include ':file-transfer-client'
+include ':file-transfer-server'
+include ':file-transfer-protocol'
