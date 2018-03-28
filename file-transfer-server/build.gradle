@@ -11,12 +11,13 @@ buildscript {
     }
 }
 
+apply from: "$rootDir/gradle/common.gradle"
+
 apply plugin: "com.innobead.python"
 apply plugin: 'idea'
 
 idea {
     module {
-        sourceDirs += file("${projectDir}/generated")
         sourceDirs += file("${projectDir}/src")
     }
 }
