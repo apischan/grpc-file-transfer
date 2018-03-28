@@ -49,17 +49,18 @@ public class FileTransferService {
         });
     }
 
-    @SneakyThrows
     public Mono<Void> saveFile(ByteString content, String path) {
-        return Mono.defer(() -> {
-            File file = new File(path);
-            FileUtils.forceMkdirParent(file);
-            Files.createDirectories(file.toPath());
-            Files.createFile(file.toPath());
-            FileOutputStream fos = new FileOutputStream(file);
-            content.writeTo(fos);
-            return Mono.empty();
-        });
+        return Mono.fromRunnable(() -> saveFileSync(content, path));
+    }
+
+    @SneakyThrows
+    private void saveFileSync(ByteString content, String path) {
+        File file = new File(path);
+        FileUtils.forceMkdirParent(file);
+        Files.createDirectories(file.toPath());
+        Files.createFile(file.toPath());
+        FileOutputStream fos = new FileOutputStream(file);
+        content.writeTo(fos);
     }
 
 }

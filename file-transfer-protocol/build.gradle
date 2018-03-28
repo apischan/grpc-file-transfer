@@ -50,6 +50,7 @@ idea {
         sourceDirs += file("${projectDir}/src/generated/main/java")
         sourceDirs += file("${projectDir}/src/generated/main/grpc")
         sourceDirs += file("${projectDir}/src/generated/main/python")
+        sourceDirs += file("${projectDir}/src/main/python")
         sourceDirs += file("${projectDir}/src/main/proto")
     }
 }
