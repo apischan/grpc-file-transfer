@@ -5,11 +5,11 @@ option java_package = "com.apischan.file";
 package com.apischan.file;
 
 message DownloadRequest {
-    string fileName = 1;
+    string filePath = 1;
 }
 
 message FileBatch {
     bytes content = 1;
-    bool isFinal = 2;
+    bool final = 2;
 }
 

@@ -16,12 +16,18 @@ apply from: "$rootDir/gradle/common.gradle"
 apply plugin: "com.innobead.python"
 apply plugin: 'idea'
 
+repositories {
+    mavenCentral()
+}
+
 idea {
     module {
         sourceDirs += file("${projectDir}/src")
+        sourceDirs += file("${projectDir}/generated")
     }
 }
 
 python {
     sourceDirs = files('src')
+    sourceDirs = files('generated')
 }

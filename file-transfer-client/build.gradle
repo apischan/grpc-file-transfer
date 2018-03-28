@@ -17,16 +17,12 @@ repositories {
 
 dependencies {
     compile(project(":file-transfer-protocol"))
-    compile("org.springframework.boot:spring-boot-starter-web")
+//    compile("org.springframework.boot:spring-boot-starter-web")
+    compile('org.springframework.boot:spring-boot-starter-webflux')
     compile("io.projectreactor:reactor-core")
-}
-
-idea {
-    module {
-        sourceDirs += file("${projectDir}/src/generated/main/java")
-        sourceDirs += file("${projectDir}/src/generated/main/grpc")
-        sourceDirs += file("${projectDir}/src/main/proto")
-    }
+    compile("commons-io:commons-io")
+    compile("org.projectlombok:lombok")
+    compile("com.fasterxml.jackson.core:jackson-databind")
 }
 
 bootJar {

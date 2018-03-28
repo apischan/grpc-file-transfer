@@ -53,3 +53,10 @@ idea {
         sourceDirs += file("${projectDir}/src/main/proto")
     }
 }
+
+task copyPythonGenerated(type: Copy) {
+    from 'generated/main/python'
+    into '../file-transfer-server/generated'
+}
+
+build.dependsOn copyPythonGenerated
