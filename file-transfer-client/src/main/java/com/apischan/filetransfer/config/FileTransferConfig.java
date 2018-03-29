@@ -15,7 +15,7 @@ public class FileTransferConfig {
 
     @Bean
     public ManagedChannel managedChannel() {
-        return NettyChannelBuilder.forAddress("localhost", 8090)
+        return NettyChannelBuilder.forAddress("localhost", 50051)
                 .usePlaintext(true)
                 .build();
     }

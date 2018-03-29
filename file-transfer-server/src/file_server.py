@@ -1,7 +1,6 @@
 from concurrent import futures
 
-import file_download_async_pb2_grpc as stub
-import file_pb2 as data
+from generated import file_download_async_pb2_grpc as stub, file_pb2 as data
 import grpc
 import time
 
@@ -10,21 +9,25 @@ _CHUNK_SIZE = 100
 
 class FileDownloadServiceServicer(stub.FileDownloadServiceServicer):
     def Download(self, request, context):
+        print(request.filePath)
         file = open(request.filePath, "r")
         file_content = file.read()
+        return self.__batches(file_content)
 
-        pass
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        # pass
+        # context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        # context.set_details('Method not implemented!')
+        # raise NotImplementedError('Method not implemented!')
 
-    def _batches(self, file_content):
+    def __batches(self, file_content):
         chunked_content = map(''.join, zip(*[iter(file_content)] * _CHUNK_SIZE))
         elems = len(chunked_content)
         for n in range(elems):
-            if n == elems:
-                yield data.FileBatch(chunked_content[n], True)
-            yield data.FileBatch(chunked_content[n], False)
+            if n == elems - 1:
+                print(chunked_content[n])
+                yield data.FileBatch(content=chunked_content[n], final=True)
+            print(chunked_content[n])
+            yield data.FileBatch(content=chunked_content[n], final=False)
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))

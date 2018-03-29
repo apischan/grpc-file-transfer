@@ -20,12 +20,16 @@ public class FileTransferController {
     @PostMapping("/")
     public Mono<Void> transfer(@RequestBody DownloadFileRequest downloadFileRequest) {
         log.info("File name...: {}", downloadFileRequest.getFileName());
-        String filePath = downloadFileRequest.getServerFilePath() + "/" + downloadFileRequest.getClientFilePath();
+        String filePath = downloadFileRequest.getServerFilePath() + "/" + downloadFileRequest.getFileName();
         DownloadRequest request = DownloadRequest.newBuilder()
                 .setFilePath(filePath)
                 .build();
         return fileTransferService.downloadFile(request)
-                .flatMap(content -> fileTransferService.saveFile(content, downloadFileRequest.getClientFilePath()));
+                .flatMap(content -> fileTransferService.saveFile(
+                        content,
+                        downloadFileRequest.getClientFilePath(),
+                        downloadFileRequest.getFileName())
+                );
 
     }
 

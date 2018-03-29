@@ -7,13 +7,11 @@ import com.google.protobuf.ByteString;
 import io.grpc.stub.StreamObserver;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
-import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.nio.file.Files;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -49,18 +47,18 @@ public class FileTransferService {
         });
     }
 
-    public Mono<Void> saveFile(ByteString content, String path) {
-        return Mono.fromRunnable(() -> saveFileSync(content, path));
+    public Mono<Void> saveFile(ByteString content, String path, String fileName) {
+        return Mono.fromRunnable(() -> saveFileSync(content, path, fileName));
     }
 
     @SneakyThrows
-    private void saveFileSync(ByteString content, String path) {
-        File file = new File(path);
-        FileUtils.forceMkdirParent(file);
-        Files.createDirectories(file.toPath());
-        Files.createFile(file.toPath());
-        FileOutputStream fos = new FileOutputStream(file);
-        content.writeTo(fos);
+    private void saveFileSync(ByteString content, String path, String fileName) {
+        File file = new File(path, fileName);
+        boolean isCreated = file.getParentFile().mkdirs();
+        if (isCreated) {
+            FileOutputStream fos = new FileOutputStream(file);
+            content.writeTo(fos);
+        }
     }
 
 }
